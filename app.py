@@ -10,15 +10,15 @@ import secrets
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
 
-# Get MongoDB URI from environment variable
-MONGO_URI = os.getenv('MONGO_URI', 'mongodb+srv://aaryanrai:PFJ8Kt0LF0Qr7mgL@securephotocluster.zdcllpy.mongodb.net/secure_share?retryWrites=true&w=majority&appName=SecurePhotoCluster')
+# Get MongoDB URI and construct connection string with SSL settings
+base_uri = os.getenv('MONGO_URI', 'mongodb+srv://aaryanrai:PFJ8Kt0LF0Qr7mgL@securephotocluster.zdcllpy.mongodb.net')
+MONGO_URI = f'{base_uri}/secure_share?ssl=true&ssl_cert_reqs=CERT_NONE&retryWrites=true&w=majority'
 
-# Configure MongoDB client with SSL/TLS settings
+# Configure MongoDB client
 client = MongoClient(
     MONGO_URI,
-    tls=True,
-    tlsAllowInvalidCertificates=True,  # For development only
-    serverSelectionTimeoutMS=5000
+    connect=True,
+    serverSelectionTimeoutMS=10000
 )
 db = client.secure_share
 fs = gridfs.GridFS(db)
