@@ -35,6 +35,9 @@ A secure photo-sharing web application that allows parties to exchange encrypted
    - Set the following:
      - Build Command: `pip install -r requirements.txt`
      - Start Command: `gunicorn app:app`
+     - Environment Variables:
+       - `MONGO_URI`: Your MongoDB connection string
+       - `PORT`: Leave empty (Render sets this automatically)
 
 3. After deployment:
    - The encryption key will be automatically generated and stored in MongoDB

@@ -10,8 +10,8 @@ import secrets
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
 
-# MongoDB Atlas connection (free tier)
-MONGO_URI = 'mongodb+srv://aaryanrai:PFJ8Kt0LF0Qr7mgL@securephotocluster.zdcllpy.mongodb.net/secure_share?retryWrites=true&w=majority&appName=SecurePhotoCluster'
+# Get MongoDB URI from environment variable
+MONGO_URI = os.getenv('MONGO_URI', 'mongodb+srv://aaryanrai:PFJ8Kt0LF0Qr7mgL@securephotocluster.zdcllpy.mongodb.net/secure_share?retryWrites=true&w=majority&appName=SecurePhotoCluster')
 client = MongoClient(MONGO_URI)
 db = client.secure_share
 fs = gridfs.GridFS(db)
@@ -80,7 +80,10 @@ def download_file(filename):
         return str(e), 400
 
 if __name__ == '__main__':
+    # Get port from environment variable (Render uses PORT)
+    port = int(os.getenv('PORT', 5001))
+    
     print("\nENCRYPTION KEY (share this securely with other parties):")
     print(key.decode())
-    print("\nServer starting on http://0.0.0.0:5001")
-    app.run(host='0.0.0.0', port=5001)
+    print(f"\nServer starting on http://0.0.0.0:{port}")
+    app.run(host='0.0.0.0', port=port)
