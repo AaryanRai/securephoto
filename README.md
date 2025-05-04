@@ -56,3 +56,6 @@ A secure photo-sharing web application that allows parties to exchange encrypted
 - Files are stored encrypted in MongoDB Atlas
 - Use HTTPS (provided by Render) for secure file transfer
 - Share the encryption key through secure channels only
+=======
+# securephoto
+>>>>>>> cc01e1b3ac3409b06ef2e423ab7cccc64d138476
