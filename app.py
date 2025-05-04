@@ -12,8 +12,15 @@ app.secret_key = os.getenv('SECRET_KEY', secrets.token_hex(32))
 
 # Enhanced security settings
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
-app.config['UPLOAD_FOLDER'] = os.getenv('UPLOAD_FOLDER', '/data/uploads')
+app.config['UPLOAD_FOLDER'] = os.getenv('UPLOAD_FOLDER', 'uploads')  # Use relative path for better compatibility
 app.config['ACCESS_KEY'] = os.getenv('ACCESS_KEY', secrets.token_urlsafe(32))
+
+# Ensure upload directory exists
+try:
+    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+    print(f"Upload directory created/verified at {app.config['UPLOAD_FOLDER']}")
+except Exception as e:
+    print(f"Error creating upload directory: {e}")
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'pdf'}
 
